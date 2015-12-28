@@ -68,7 +68,9 @@ if not code[0] == '1':
 		elif line[0] == 'duplicate':
 			stack.append(stack[~0])
 		elif line[0] == 'truncate':
-			stack.append(int(math.floor(stack.pop())))
+			stack.append(math.floor(stack.pop()))
+		elif line[0] == 'integer':
+			stack.append(int(stack.pop())
 		elif line[0] == 'switch':
 			val1, val2 = stack.pop(), stack.pop()
 			stack.append(val1)
@@ -174,7 +176,9 @@ else:
 		elif line[0] == 'e':
 			stack.append(stack[~0])
 		elif line[0] == 'c':
-			stack.append(int(math.floor(stack.pop())))
+			stack.append(math.floor(stack.pop()))
+		elif line[0] == 'i':
+			stack.append(int(stack.pop())
 		elif line[0] == 'w':
 			val1, val2 = stack.pop(), stack.pop()
 			stack.append(val1)
