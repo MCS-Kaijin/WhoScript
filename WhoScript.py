@@ -5,6 +5,14 @@ code = ''
 with open(sys.argv[1], 'r') as f:
 	code = f.read().strip()
 
+stdin = ''
+is_stdin = False
+try:
+	stdin = ' '.join(sys.argv[2::])
+	is_stdin = len(sys.argv) >= 3
+except:
+	pass
+
 stack = []
 tmpv = []
 tmpp = []
@@ -13,6 +21,9 @@ if not code:
 	print 'Reverse the polarity of the neutron flow!'
 	raise KeyboardInterrupt
 if not code[0] == '1':
+	tmp = re.findall((r'@.+'), code)
+	for occurrence in tmp:
+		code = code.replace(occurrence, '')
 	i = 0
 	while i < len(code.split('\n')):
 		line = re.findall((r'[\w#@+*/\^!&|=<>-]+'), code.split('\n')[i])
@@ -77,21 +88,32 @@ if not code[0] == '1':
 				else: stack.append(0)
 			elif line[1] == 'if':
 				if not stack.pop():
-					while not 'TARDIS landing' in code.split('\n')[i] or 'TARDIS else' in code.split('\n')[i]: i += 1
-				break
+					while not 'TARDIS else' in code.split('\n')[i] and not 'TARDIS landing' in code.split('\n')[i]: i += 1
 			elif line[1] == 'else':
 				if stack.pop():
-					while 'TARDIS landing' in code.split('\n')[i] or 'TARDIS if' in code.split('\n')[i]: i += 1
-				break
+					while not 'TARDIS landing' in code.split('\n')[i] and not 'TARDIS if' in code.split('\n')[i]: i += 1
 		elif line[0] == 'psychic_paper':
 			if line[1] == 'write':
-				if line[len(line)-1] == '#': out += str(stack.pop())
+				if line[~0] == '#': out += str(stack.pop())
 				else: out += chr(stack.pop())
 			elif line[1] == 'read':
-				if line[len(line)-1] == '#': stack.append(int(raw_input('>>> ').strip(), 16))
-				else: stack.append(ord(raw_input('>>> ').strip()[0]))
+				try:
+					if line[~0] == '#':
+						if not stdin and not is_stdin:
+							stack.append(int(raw_input('>>> ').strip(), 16))
+						else:
+							stack.append(int(stdin[0]+stdin[1], 16))
+							stdin = stdin[2::]
+					else:
+						if not stdin and not is_stdin:
+							stack.append(ord(raw_input('>>> ').strip()[0]))
+						else:
+							stack.append(ord(stdin[0]))
+							stdin = stdin[1::]
+				except IndexError as e:
+					stack.append(0)
 			elif line[1] == 'flush':
-				if line[len(line)-1] == '#': out += ' '.join(stack)
+				if line[~0] == '#': out += ' '.join(stack)
 				else: out += ''.join(map(chr, stack))
 		i += 1
 else:
@@ -161,12 +183,10 @@ else:
 				else: stack.append(0)
 			elif line[0] == 'i':
 				if not stack.pop():
-					while not code[i] == 'tl' or code[i] == 'te': i += 1
-				break
+					while not code[i] == 'tl' and not code[i] == 'te': i += 1
 			elif line[0] == 'e':
 				if stack.pop():
-					while not code[i] == 'tl' or code[i] == 'ti': i += 1
-				break
+					while not code[i] == 'tl' and not code[i] == 'ti': i += 1
 		elif line[0] == 'p':
 			line = line[1::].split(' ')
 			if line[0] == 'w':
@@ -177,10 +197,21 @@ else:
 					out += chr(stack.pop())
 			elif line[0] == 'r':
 				try:
-					line[1]
-					stack.append(int(raw_input('>>> ').strip(), 16))
-				except:
-					stack.append(ord(raw_input('>>> ').strip()[0]))
+					try:
+						line[1]
+						if not stdin and not is_stdin:
+							stack.append(int(raw_input('>>> ').strip(), 16))
+						else:
+							stack.append(int(stdin[0]+stdin[1], 16))
+							stdin = stdin[2::]
+					except:
+						if not stdin and not is_stdin:
+							stack.append(ord(raw_input('>>> ').strip()[0]))
+						else:
+							stack.append(ord(stdin[0]))
+							stdin = stdin[1::]
+				except IndexError as e:
+					stack.append(0)
 			elif line[0] == 'f':
 				try:
 					line[1]
