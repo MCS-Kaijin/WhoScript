@@ -68,6 +68,10 @@ if not code[0] == '1':
 			stack.append(stack[~0])
 		elif line[0] == 'truncate':
 			stack.append(int(math.floor(stack.pop())))
+		elif line[0] == 'switch':
+			val1, val2 = stack.pop(), stack.pop()
+			stack.append(val1)
+			stack.append(val2)
 		elif line[0] == 'time_vortex':
 			tmpv.append(i)
 		elif line[0] == 'paradox':
@@ -166,6 +170,10 @@ else:
 			stack.append(stack[~0])
 		elif line[0] == 'c':
 			stack.append(int(math.floor(stack.pop())))
+		elif line[0] == 'w':
+			val1, val2 = stack.pop(), stack.pop()
+			stack.append(val1)
+			stack.append(val2)
 		elif line[0] == 'v':
 			tmpv.append(i)
 		elif line[0] == 'd':
