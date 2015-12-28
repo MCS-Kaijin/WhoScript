@@ -17,6 +17,7 @@ except:
 stack = []
 tmpv = []
 tmpp = []
+tmp = []
 out = ''
 if not code:
 	print 'Reverse the polarity of the neutron flow!'
@@ -72,6 +73,10 @@ if not code[0] == '1':
 			val1, val2 = stack.pop(), stack.pop()
 			stack.append(val1)
 			stack.append(val2)
+		elif line[0] == 'pop':
+			tmp.append(stack.pop())
+		elif line[0] == 'push':
+			stack.append(tmp.pop())
 		elif line[0] == 'time_vortex':
 			tmpv.append(i)
 		elif line[0] == 'paradox':
@@ -174,6 +179,10 @@ else:
 			val1, val2 = stack.pop(), stack.pop()
 			stack.append(val1)
 			stack.append(val2)
+		elif line[0] == '>':
+			tmp.append(stack.pop())
+		elif line[0] == '<':
+			stack.append(tmp.pop())
 		elif line[0] == 'v':
 			tmpv.append(i)
 		elif line[0] == 'd':
