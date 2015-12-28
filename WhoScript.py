@@ -1,5 +1,6 @@
 import re
 import sys
+import math
 
 code = ''
 with open(sys.argv[1], 'r') as f:
@@ -38,19 +39,19 @@ if not code[0] == '1':
 		elif line[0] == '@':
 			pass
 		elif line[0] == '+':
-			val2, val1 = stack.pop(), stack.pop()
+			val2, val1 = float(stack.pop()), float(stack.pop())
 			stack.append(val1+val2)
 		elif line[0] == '-':
-			val2, val1 = stack.pop(), stack.pop()
+			val2, val1 = float(stack.pop()), float(stack.pop())
 			stack.append(val1-val2)
 		elif line[0] == '*':
-			val2, val1 = stack.pop(), stack.pop()
+			val2, val1 = float(stack.pop()), float(stack.pop())
 			stack.append(val1*val2)
 		elif line[0] == '/':
-			val2, val1 = stack.pop(), stack.pop()
+			val2, val1 = float(stack.pop()), float(stack.pop())
 			stack.append(val1/val2)
 		elif line[0] == '^':
-			val2, val1 = stack.pop(), stack.pop()
+			val2, val1 = float(stack.pop()), float(stack.pop())
 			stack.append(val1**val2)
 		elif line[0] == '!':
 			stack.append(~stack.pop())
@@ -65,6 +66,8 @@ if not code[0] == '1':
 			stack.append(val1^val2)
 		elif line[0] == 'duplicate':
 			stack.append(stack[~0])
+		elif line[0] == 'truncate':
+			stack.append(int(math.floor(stack.pop())))
 		elif line[0] == 'time_vortex':
 			tmpv.append(i)
 		elif line[0] == 'paradox':
@@ -113,7 +116,7 @@ if not code[0] == '1':
 				except IndexError as e:
 					stack.append(0)
 			elif line[1] == 'flush':
-				if line[~0] == '#': out += ' '.join(stack)
+				if line[~0] == '#': out += ' '.join(map(str, stack))
 				else: out += ''.join(map(chr, stack))
 		i += 1
 else:
@@ -134,19 +137,19 @@ else:
 			for val in line:
 				stack.append(int(val, 16))
 		elif line[0] == '+':
-			val2, val1 = stack.pop(), stack.pop()
+			val2, val1 = float(stack.pop()), float(stack.pop())
 			stack.append(val1+val2)
 		elif line[0] == '-':
-			val2, val1 = stack.pop(), stack.pop()
+			val2, val1 = float(stack.pop()), float(stack.pop())
 			stack.append(val1-val2)
 		elif line[0] == '*':
-			val2, val1 = stack.pop(), stack.pop()
+			val2, val1 = float(stack.pop()), float(stack.pop())
 			stack.append(val1*val2)
 		elif line[0] == '/':
-			val2, val1 = stack.pop(), stack.pop()
+			val2, val1 = float(stack.pop()), float(stack.pop())
 			stack.append(val1/val2)
 		elif line[0] == '^':
-			val2, val1 = stack.pop(), stack.pop()
+			val2, val1 = float(stack.pop()), float(stack.pop())
 			stack.append(val1**val2)
 		elif line[0] == '!':
 			stack.append(~stack.pop())
@@ -161,6 +164,8 @@ else:
 			stack.append(val1^val2)
 		elif line[0] == 'e':
 			stack.append(stack[~0])
+		elif line[0] == 'c':
+			stack.append(int(math.floor(stack.pop())))
 		elif line[0] == 'v':
 			tmpv.append(i)
 		elif line[0] == 'd':
@@ -215,7 +220,7 @@ else:
 			elif line[0] == 'f':
 				try:
 					line[1]
-					out += ' '.join(stack)
+					out += ' '.join(map(str, stack))
 				except:
 					out += ''.join(map(chr, stack))
 		i += 1
