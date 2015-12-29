@@ -18,10 +18,9 @@ stack = []
 tmpv = []
 tmpp = []
 tmp = []
-out = ''
 if not code:
 	print 'Reverse the polarity of the neutron flow!'
-	raise KeyboardInterrupt
+	sys.exit(1)
 if not code[0] == '1':
 	tmp = re.findall((r'@.+'), code)
 	for occurrence in tmp:
@@ -108,8 +107,8 @@ if not code[0] == '1':
 					while not 'TARDIS landing' in code.split('\n')[i] and not 'TARDIS if' in code.split('\n')[i]: i += 1
 		elif line[0] == 'psychic_paper':
 			if line[1] == 'write':
-				if line[~0] == '#': out += str(stack.pop())
-				else: out += chr(stack.pop())
+				if line[~0] == '#': sys.stdout.write(str(stack.pop()))
+				else: sys.stdout.write(chr(stack.pop()))
 			elif line[1] == 'read':
 				try:
 					if line[~0] == '#':
@@ -127,8 +126,8 @@ if not code[0] == '1':
 				except IndexError as e:
 					stack.append(0)
 			elif line[1] == 'flush':
-				if line[~0] == '#': out += ' '.join(map(str, stack))
-				else: out += ''.join(map(chr, stack))
+				if line[~0] == '#': sys.stdout.write(' '.join(map(str, stack)))
+				else: sys.stdout.write(''.join(map(chr, stack)))
 		i += 1
 else:
 	tmp = re.findall((r'"[^"]+"'), code)
@@ -218,9 +217,9 @@ else:
 			if line[0] == 'w':
 				try:
 					line[1]
-					out += str(stack.pop())
+					sys.stdout.write(str(stack.pop()))
 				except:
-					out += chr(stack.pop())
+					sys.stdout.write(chr(stack.pop()))
 			elif line[0] == 'r':
 				try:
 					try:
@@ -241,9 +240,7 @@ else:
 			elif line[0] == 'f':
 				try:
 					line[1]
-					out += ' '.join(map(str, stack))
+					sys.stdout.write(' '.join(map(str, stack)))
 				except:
-					out += ''.join(map(chr, stack))
+					sys.stdout.write(''.join(map(chr, stack)))
 		i += 1
-
-print out
