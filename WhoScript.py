@@ -126,7 +126,7 @@ if not code[0] == '1':
 							stack.append(ord(stdin[0]))
 							stdin = stdin[1::]
 				except IndexError as e:
-					stack.append(0)
+					stack.append(-1)
 			elif line[1] == 'flush':
 				if line[~0] == '#': sys.stdout.write(' '.join(map(str, stack)))
 				else: sys.stdout.write(''.join(map(chr, stack)))
@@ -238,7 +238,7 @@ else:
 							stack.append(ord(stdin[0]))
 							stdin = stdin[1::]
 				except IndexError as e:
-					stack.append(0)
+					stack.append(-1)
 			elif line[0] == 'f':
 				try:
 					line[1]
